@@ -1,0 +1,42 @@
+version: "3.2"
+
+networks:
+  my_wordpress:
+
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - WORDPRESS_DB_PASSWORD=my_wordpress
+      - WORDPRESS_DB_USER=my_wordpress
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_PORT=3306
+      - WORDPRESS_DB_NAME=my_wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+    networks:
+      - my_wordpress
+    depends_on:
+       db:
+         condition: service_healthy
+  db:
+    image: mariadb:10
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my_wordpress
+      - MYSQL_PASSWORD=my_wordpress
+      - MYSQL_USER=my_wordpress
+      - MYSQL_DATABASE=my_wordpress
+    networks:
+      - my_wordpress
