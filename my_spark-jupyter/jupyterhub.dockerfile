@@ -9,12 +9,12 @@ RUN python3 -m pip install --no-cache-dir \
     dockerspawner \
     jupyterhub-nativeauthenticator \
     sparkmagic \
-    spylon-kernel==0.4.1 \
-    pyiceberg[pyarrow,duckdb,pandas]==0.5.1 \
-    jupysql==0.10.5 \
-    matplotlib==3.8.2 \
-    scipy==1.11.4 \
-    duckdb-engine==0.9.4 \
+    spylon-kernel \
+    pyiceberg[pyarrow,duckdb,pandas] \
+    jupysql \
+    matplotlib \
+    scipy \
+    duckdb-engine \
     spark
 
 CMD ["jupyterhub", "-f", "/srv/jupyterhub/jupyterhub_config.py"]
