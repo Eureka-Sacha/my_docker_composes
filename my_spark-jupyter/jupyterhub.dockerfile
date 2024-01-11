@@ -3,7 +3,7 @@
 ARG JUPYTERHUB_VERSION
 FROM quay.io/jupyterhub/jupyterhub:$JUPYTERHUB_VERSION
 
-RUN apt-get update && apt-get -y install libkrb5-dev python3-dev
+RUN apt-get update && apt-get -y install gcc libkrb5-dev python3-dev
 # Install dockerspawner, nativeauthenticator
 # hadolint ignore=DL3013
 RUN python3 -m pip install --no-cache-dir \
