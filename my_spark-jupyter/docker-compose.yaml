@@ -123,4 +123,6 @@ volumes:
 
 networks:
   spark-JupyterHub-network:
+    driver: bridge
   jupyterhub-network:
+    driver: bridge
