@@ -122,5 +122,5 @@ volumes:
   jupyterhub-data:
 
 networks:
-  - spark-JupyterHub-network:
-  - jupyterhub-network:
+  spark-JupyterHub-network:
+  jupyterhub-network:
