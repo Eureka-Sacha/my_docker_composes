@@ -12,7 +12,7 @@ services:
     container_name: jupyterhub
     networks:
       - spark-JupyterHub-network
-#      - jupyterhub-network
+      - jupyterhub-network
     volumes:
       # The JupyterHub configuration file
       - "./jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
@@ -27,7 +27,7 @@ services:
       # This username will be a JupyterHub admin
       JUPYTERHUB_ADMIN: admin
       # All containers will join this network
-      DOCKER_NETWORK_NAME: spark-JupyterHub-network
+      DOCKER_NETWORK_NAME: jupyterhub-network
       # JupyterHub will spawn this Notebook image for users
       DOCKER_NOTEBOOK_IMAGE: quay.io/jupyter/base-notebook:latest
       # Notebook directory inside user image
@@ -125,6 +125,6 @@ networks:
   spark-JupyterHub-network:
     name: spark-JupyterHub-network
     driver: bridge
-#  jupyterhub-network:
-#    name: jupyterhub-network
-#    driver: bridge
+  jupyterhub-network:
+    name: jupyterhub-network
+    driver: bridge
