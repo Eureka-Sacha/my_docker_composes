@@ -41,8 +41,7 @@ services:
     networks:
       - spark-JupyterHub-network
     volumes:
-      - ./livy/livy.conf:/opt/livy/conf/:ro
-      - ./livy/livy-env.sh:/opt/livy/conf/livy-env.sh:ro
+      - ./livy/:/opt/livy/conf/:ro
     ports:
       - "8998:8998"
     depends_on:
