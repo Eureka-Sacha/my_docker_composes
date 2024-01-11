@@ -11,8 +11,8 @@ services:
     image: jupyterhub
     container_name: jupyterhub
     networks:
-      spark-JupyterHub-network:
-      jupyterhub-network:
+      - spark-JupyterHub-network
+      - jupyterhub-network
     volumes:
       # The JupyterHub configuration file
       - "./jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro"
