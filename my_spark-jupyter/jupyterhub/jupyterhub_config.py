@@ -12,7 +12,7 @@ c = get_config()  # noqa: F821
 
 # Spawn single-user servers as Docker containers
 c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner"
-
+c.Spawner.http_timeout = 120
 # Spawn containers from this image
 c.DockerSpawner.image = os.environ["DOCKER_NOTEBOOK_IMAGE"]
 
