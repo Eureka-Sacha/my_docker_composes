@@ -67,7 +67,7 @@ services:
     restart: always
     container_name: spark-master
     #    network_mode: host
-    command: /opt/spark/sbin/start-master.sh
+#    command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
     environment:
       - "SPARK_MASTER_HOST=spark"
@@ -84,7 +84,7 @@ services:
     hostname: spark-worker
     restart: always
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh
+#    command: /opt/spark/sbin/start-worker.sh
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
