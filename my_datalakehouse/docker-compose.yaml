@@ -69,7 +69,7 @@ services:
     command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
     environment:
-      - "SPARK_MASTER_HOST=spark-master"
+      - "SPARK_MASTER_HOST=spark"
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=master
       - SPARK_SSL_ENABLED=no
@@ -83,7 +83,7 @@ services:
     image: datamechanics/spark:jvm-only-3.1-latest
     hostname: spark-worker
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
+    command: /opt/spark/sbin/start-worker.sh spark://spark:7077
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
