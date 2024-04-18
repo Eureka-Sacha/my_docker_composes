@@ -68,11 +68,13 @@ services:
     network_mode: host
     command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
-    networks:
-      - spark-net
     environment:
-      - "SPARK_MASTER_HOST=spark"
+      - "SPARK_MASTER_HOST=spark-master"
       - "SPARK_NO_DAEMONIZE=true"
+      - SPARK_MODE=master
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+
     # ports:
     #   - "8080:8080"
     #   - "7077:7077"
@@ -82,10 +84,12 @@ services:
     hostname: spark-worker
     container_name: spark-worker
     command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
-    networks:
-      - spark-net
     environment:
       - "SPARK_NO_DAEMONIZE=true"
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
     ports:
       - "8888:8080"
       - "7777:7077"
@@ -168,5 +172,3 @@ services:
 # 持久存储
 volumes:
   dremio-data:
-networks:
-  spark-net:
