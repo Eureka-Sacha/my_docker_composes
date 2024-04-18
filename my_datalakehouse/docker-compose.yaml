@@ -22,7 +22,9 @@ x-spark-data-dir: &spark-data-dir
 x-postgres-data-dir: &postgres-data-dir
   # 映射文件路径
   - ./postgres/data:/var/lib/postgresql/data
-
+x-dremio-data-dir: &dremio-data-dir
+  # 映射文件路径
+  - ./dremio/conf/dremio.conf:/etc/dremio/dremio.conf:ro
 
 #用于部署运行所依赖的基础环境组件
 services:
@@ -97,7 +99,7 @@ services:
     #        reservations:
     #          cpus: '0.5'
     #          memory: 1024M
-    environment:
+#    environment:
       # 中文查询乱码问题解决
 #      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
     ports:
