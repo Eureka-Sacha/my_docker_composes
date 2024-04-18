@@ -84,11 +84,10 @@ services:
     hostname: spark-worker
     restart: always
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh
+    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7177
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7177
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
     ports:
