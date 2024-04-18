@@ -22,7 +22,7 @@ services:
     <<: *minio-common
     hostname: minio1
     ports:
-      - "9021:9001"
+      - "9001:9001"
     volumes:
       - ./data/data1:/data
 
@@ -30,7 +30,7 @@ services:
     <<: *minio-common
     hostname: minio2
     ports:
-      - "9022:9001"
+      - "9002:9001"
     volumes:
       - ./data/data2:/data
 
@@ -38,7 +38,7 @@ services:
     <<: *minio-common
     hostname: minio3
     ports:
-      - "9023:9001"
+      - "9003:9001"
     volumes:
       - ./data/data3:/data
 
@@ -46,7 +46,7 @@ services:
     <<: *minio-common
     hostname: minio4
     ports:
-      - "9024:9001"
+      - "9004:9001"
     volumes:
       - ./data/data4:/data
 
