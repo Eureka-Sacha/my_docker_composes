@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  mssql:
+    container_name: mssql
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "A_P@ssw0rd"
+      ACCEPT_EULA: "Y"
+  dremio_coordinator:
+    container_name: dremio
+    image: dremio/dremio-oss
+    volumes:
+      - ./coordinator:/MNT/MYSHARE
+    environment:
+      CONF: "is_coordinator"
+      EXECTUORS : "dremio_executor_1,dremio_executor_2"
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "32010:32010"
+      - "45678:45678"
+    links:
+      - mssql
+  dremio_executor_1:
+    container_name: dremio
+    image: dremio/dremio-oss
+    volumes:
+      - ./exec1:/MNT/MYSHARE
+    environment:
+      CONF: "is_executor"
+      ID: "1"
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "32010:32010"
+      - "45678:45678"
+    links:
+      - dremio_coordinator
+  dremio_executor_2:
+    container_name: dremio
+    image: dremio/dremio-oss
+    volumes:
+      - ./exec2:/MNT/MYSHARE
+    environment:
+      CONF: "is_executor"
+      ID: "2"
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "32010:32010"
+      - "45678:45678"
+    links:
+      - dremio_coordinator
