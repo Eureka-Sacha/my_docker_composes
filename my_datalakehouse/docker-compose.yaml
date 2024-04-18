@@ -64,6 +64,7 @@ services:
   spark-master:
     image: datamechanics/spark:jvm-only-3.1-latest
     hostname: spark-master
+    restart: always
     container_name: spark-master
     network_mode: host
     command: /opt/spark/sbin/start-master.sh
@@ -82,8 +83,9 @@ services:
   spark-worker:
     image: datamechanics/spark:jvm-only-3.1-latest
     hostname: spark-worker
+    restart: always
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh spark://spark:7077
+    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
@@ -128,6 +130,7 @@ services:
     image: metabase/metabase:v0.49.6
     container_name: metabase
     hostname: metabase
+    restart: always
     volumes: *metabase-data-dir
     ports:
       - "3000:3000"
@@ -145,6 +148,7 @@ services:
     image: postgres:14.0
     container_name: postgres-secrets
     hostname: postgres-secrets
+    restart: always
     environment:
       POSTGRES_USER: metabase
       POSTGRES_DB: metabase
