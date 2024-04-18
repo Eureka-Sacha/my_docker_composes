@@ -99,7 +99,7 @@ services:
     #          memory: 1024M
     environment:
       # 中文查询乱码问题解决
-      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
+#      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
     ports:
       - "9047:9047"
       - "31010:31010"
