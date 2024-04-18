@@ -62,33 +62,33 @@ services:
   # 2.spark3(包含Deleta Lake)
   # 2.1 spark-master
   spark-master:
-    image: docker.io/bitnami/spark:3.5
+    image: datamechanics/spark:jvm-only-3.1-latest
     hostname: spark-master
     restart: always
     container_name: spark-master
-    #    network_mode: host
-#    command: /opt/spark/sbin/start-master.sh
+#    network_mode: host
+    command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
     environment:
-      - "SPARK_MASTER_HOST=spark"
+      - "SPARK_MASTER_HOST=spark-master"
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=master
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
-    ports:
-      - "8089:8080"
-      - "7077:7077"
+   ports:
+     - "8180:8080"
+     - "7177:7077"
   # 2.2 spark-worker
   spark-worker:
-    image: docker.io/bitnami/spark:3.5
+    image: datamechanics/spark:jvm-only-3.1-latest
     hostname: spark-worker
     restart: always
     container_name: spark-worker
-#    command: /opt/spark/sbin/start-worker.sh
+    command: /opt/spark/sbin/start-worker.sh
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_MASTER_URL=spark://spark-master:7177
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
     ports:
@@ -102,17 +102,17 @@ services:
     container_name: dremio
     command: -H unix:///var/run/docker.sock
     restart: always
-      #    deploy:
-      #      resources:
-      #        limits:
-      #          cpus: '1.0'
-      #          memory: 2048M
-      #        reservations:
-      #          cpus: '0.5'
-      #          memory: 1024M
-      #    environment:
-    # 中文查询乱码问题解决
-    #      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
+    #    deploy:
+    #      resources:
+    #        limits:
+    #          cpus: '1.0'
+    #          memory: 2048M
+    #        reservations:
+    #          cpus: '0.5'
+    #          memory: 1024M
+#    environment:
+      # 中文查询乱码问题解决
+#      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
     ports:
       - "9047:9047"
       - "31010:31010"
