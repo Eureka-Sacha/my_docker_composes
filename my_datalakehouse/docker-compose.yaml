@@ -75,9 +75,9 @@ services:
       - SPARK_MODE=master
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
-   ports:
-     - "8180:8080"
-     - "7177:7077"
+    ports:
+      - "8180:8080"
+      - "7177:7077"
   # 2.2 spark-worker
   spark-worker:
     image: datamechanics/spark:jvm-only-3.1-latest
