@@ -61,11 +61,11 @@ services:
       retries: 3
   # 2.spark3(包含Deleta Lake)
   # 2.1 spark-master
-  spark-master:
+  spark:
     image: datamechanics/spark:jvm-only-3.1-latest
-    hostname: spark-master
+    hostname: spark
     restart: always
-    container_name: spark-master
+    container_name: spark
     network_mode: host
     command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
@@ -75,7 +75,6 @@ services:
       - SPARK_MODE=master
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
-
     # ports:
     #   - "8080:8080"
     #   - "7077:7077"
@@ -85,18 +84,18 @@ services:
     hostname: spark-worker
     restart: always
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
+    command: /opt/spark/sbin/start-worker.sh
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_MASTER_URL=spark://spark:7077
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
     ports:
       - "8888:8080"
       - "7777:7077"
     depends_on:
-      - spark-master
+      - spark
   # 3. dremio
   dremio:
     image: dremio/dremio-oss
