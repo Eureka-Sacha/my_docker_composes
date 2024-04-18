@@ -1,0 +1,161 @@
+version: '3.7'
+# 配置信息
+#################### MinIO #####################
+x-minio-image: &minio-image
+                 minio/minio
+x-minio-data-dir: &minio-data-dir
+  # 映射文件路径
+  - ./minio/data:/data
+
+#################### Metabase #####################
+x-metabase-data-dir: &metabase-data-dir
+  # 映射文件路径
+  - ./metabase/dev/urandom:/dev/random:ro
+  - ./metabase/plugins:/plugins
+
+#################### Spark #####################
+x-spark-data-dir: &spark-data-dir
+  # 映射文件路径
+  - ./spark/plugins:/opt/spark/.ivy2
+
+#################### Postgres #####################
+x-postgres-data-dir: &postgres-data-dir
+  # 映射文件路径
+  - ./postgres/data:/var/lib/postgresql/data
+
+
+#用于部署运行所依赖的基础环境组件
+services:
+  # 1.MinIO服务器
+  minio:
+    image: *minio-image
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: always
+    #    deploy:
+    #      resources:
+    #        limits:
+    #          cpus: '0.50'
+    #          memory: 512M
+    #        reservations:
+    #          cpus: '0.25'
+    #          memory: 256M
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123 #大于等于8位
+    logging:
+      options:
+        max-size: "1024M" # 最大文件上传限制
+        max-file: "10"
+      driver: json-file
+    volumes: *minio-data-dir
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  # 2.spark3(包含Deleta Lake)
+  # 2.1 spark-master
+  spark-master:
+    image: datamechanics/spark:jvm-only-3.1-latest
+    hostname: spark-master
+    container_name: spark-master
+    network_mode: host
+    command: /opt/spark/sbin/start-master.sh
+    volumes: *spark-data-dir
+    environment:
+      - "SPARK_MASTER_HOST=spark"
+      - "SPARK_NO_DAEMONIZE=true"
+    # ports:
+    #   - "8080:8080"
+    #   - "7077:7077"
+  # 2.2 spark-worker
+  spark-worker:
+    image: datamechanics/spark:jvm-only-3.1-latest
+    hostname: spark-worker
+    container_name: spark-worker
+    command: /opt/spark/sbin/start-worker.sh spark://10.0.0.198:7077
+    environment:
+      - "SPARK_NO_DAEMONIZE=true"
+    ports:
+      - "8888:8080"
+      - "7777:7077"
+  # 3. dremio
+  dremio:
+    image: dremio/dremio-oss:15.0.0
+    container_name: dremio
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    #    deploy:
+    #      resources:
+    #        limits:
+    #          cpus: '1.0'
+    #          memory: 2048M
+    #        reservations:
+    #          cpus: '0.5'
+    #          memory: 1024M
+    environment:
+      # 中文查询乱码问题解决
+      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "45678:45678"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
+      - /etc/localtime:/etc/localtime:ro
+      - dremio-data:/opt/dremio/data
+      - dremio-data:/var/lib/dremio
+
+  # 4. metabase
+  metabase:
+    image: metabase/metabase:v0.39.5
+    container_name: metabase
+    hostname: metabase
+    volumes: *metabase-data-dir
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: metabase123
+      MB_DB_HOST: postgres-secrets
+    depends_on:
+      - postgres-secrets
+  # 4. metabase依赖的数据库
+  postgres-secrets:
+    image: postgres:14.0
+    container_name: postgres-secrets
+    hostname: postgres-secrets
+    environment:
+      POSTGRES_USER: metabase
+      POSTGRES_DB: metabase
+      POSTGRES_PASSWORD: metabase123
+    volumes: *postgres-data-dir
+
+
+  # 5.Nginx服务器
+  #  nginx:
+  #    image: nginx:${NGINX_VERSION}
+  #    container_name: nginx
+  #    restart: always
+  #    ports:
+  #      - "80:8080"
+  #      - "7930:7930"
+  #      - "9001:9001"
+  #      - "9002:9002"
+  #    #定义挂载点
+  #    volumes:
+  #      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf
+  #      - ${NGINX_CONF_DIR}:/etc/nginx/conf.d
+  #      - ${NGINX_LOG_DIR}:/var/log/nginx
+  #      - ${NGINX_HTML_DIR}:/etc/nginx/html
+
+# 持久存储
+volumes:
+  dremio-data:
