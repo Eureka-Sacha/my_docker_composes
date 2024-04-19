@@ -120,9 +120,9 @@ services:
       - "45678:45678"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
-      - /etc/localtime:/etc/localtime:ro
-      - dremio-data:/opt/dremio/data
-      - dremio-data:/var/lib/dremio
+#      - /etc/localtime:/etc/localtime:ro
+      - ./dremio/data:/opt/dremio/data
+      - ./dremio/var:/var/lib/dremio
 
   # 4. metabase
   metabase:
@@ -173,5 +173,5 @@ services:
   #      - ${NGINX_HTML_DIR}:/etc/nginx/html
 
 # 持久存储
-volumes:
-  dremio-data:
+#volumes:
+#  dremio-data:
