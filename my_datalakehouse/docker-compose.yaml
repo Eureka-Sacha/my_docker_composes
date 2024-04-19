@@ -86,6 +86,7 @@ services:
     container_name: spark-worker
     command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
     environment:
+      - "SPARK_MASTER_HOST=spark-master"
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
       - SPARK_SSL_ENABLED=no
@@ -97,7 +98,7 @@ services:
       - spark-master
   # 3. dremio
   dremio:
-    image: dremio/dremio-oss
+    image: dremio/dremio-oss:24.2
     container_name: dremio
     command: -H unix:///var/run/docker.sock
     restart: always
