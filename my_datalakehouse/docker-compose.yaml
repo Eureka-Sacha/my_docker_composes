@@ -84,7 +84,7 @@ services:
     hostname: spark-worker
     restart: always
     container_name: spark-worker
-    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7177
+    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
     environment:
       - "SPARK_NO_DAEMONIZE=true"
       - SPARK_MODE=worker
