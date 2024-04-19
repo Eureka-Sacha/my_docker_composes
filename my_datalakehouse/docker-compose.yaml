@@ -100,7 +100,7 @@ services:
   dremio:
     image: dremio/dremio-oss
     container_name: dremio
-    command: -H unix:///var/run/docker.sock
+#    command: -H unix:///var/run/docker.sock
     restart: always
     #    deploy:
     #      resources:
@@ -118,11 +118,11 @@ services:
       - "31010:31010"
       - "32010:32010"
       - "45678:45678"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
 #      - /etc/localtime:/etc/localtime:ro
-      - ./dremio/data:/opt/dremio/data
-      - ./dremio/var:/var/lib/dremio
+#      - ./dremio/data:/opt/dremio/data
+#      - ./dremio/var:/var/lib/dremio
 
   # 4. metabase
   metabase:
