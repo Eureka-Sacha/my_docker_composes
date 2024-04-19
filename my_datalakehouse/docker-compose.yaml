@@ -98,7 +98,7 @@ services:
       - spark-master
   # 3. dremio
   dremio:
-    image: dremio/dremio-oss:24.2
+    image: dremio/dremio-oss
     container_name: dremio
     command: -H unix:///var/run/docker.sock
     restart: always
