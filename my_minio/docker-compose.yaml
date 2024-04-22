@@ -2,13 +2,15 @@ version: '3.7'
 
 # 所有容器通用的设置和配置
 x-minio-common: &minio-common
-  image: minio/minio
-  command: server --console-address ":9001" http://minio{1...4}/data
+  image: bitnami/minio
   expose:
     - "9000"
   environment:
-     MINIO_ROOT_USER: admin
-     MINIO_ROOT_PASSWORD: admin123
+    - MINIO_ROOT_USER=admin
+    - MINIO_ROOT_PASSWORD=admin123
+    - MINIO_DISTRIBUTED_MODE_ENABLED=yes
+    - MINIO_DISTRIBUTED_NODES=minio{1...4}/data
+    - MINIO_SKIP_CLIENT=yes
   healthcheck:
     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
     interval: 30s
