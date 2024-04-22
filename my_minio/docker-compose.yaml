@@ -11,9 +11,9 @@ x-minio-common: &minio-common
     - MINIO_DISTRIBUTED_MODE_ENABLED=yes
     - MINIO_DISTRIBUTED_NODES=minio{1...4}
     - MINIO_SKIP_CLIENT=yes
-#    - MINIO_HTTP_TRACE=/opt/bitnami/minio/log/minio.log
+  #    - MINIO_HTTP_TRACE=/opt/bitnami/minio/log/minio.log
   healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+    test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
     interval: 30s
     timeout: 20s
     retries: 3
@@ -27,7 +27,7 @@ services:
     ports:
       - "9001:9001"
     volumes:
-      - data1:/data
+      - data1:/bitnami/minio/data
 
   minio2:
     <<: *minio-common
@@ -35,7 +35,7 @@ services:
     ports:
       - "9002:9001"
     volumes:
-      - data2:/data
+      - data2:/bitnami/minio/data
 
   minio3:
     <<: *minio-common
@@ -43,7 +43,7 @@ services:
     ports:
       - "9003:9001"
     volumes:
-      - data3:/data
+      - data3:/bitnami/minio/data
 
   minio4:
     <<: *minio-common
@@ -51,7 +51,7 @@ services:
     ports:
       - "9004:9001"
     volumes:
-      - data4:/data
+      - data4:/bitnami/minio/data
 
   nginx:
     image: nginx:1.19.2-alpine
