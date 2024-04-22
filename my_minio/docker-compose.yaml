@@ -24,7 +24,7 @@ services:
     ports:
       - "9001:9001"
     volumes:
-      - ./data/data1:/data
+      - data1:/data
 
   minio2:
     <<: *minio-common
@@ -32,7 +32,7 @@ services:
     ports:
       - "9002:9001"
     volumes:
-      - ./data/data2:/data
+      - data2:/data
 
   minio3:
     <<: *minio-common
@@ -40,7 +40,7 @@ services:
     ports:
       - "9003:9001"
     volumes:
-      - ./data/data3:/data
+      - data3:/data
 
   minio4:
     <<: *minio-common
@@ -48,7 +48,7 @@ services:
     ports:
       - "9004:9001"
     volumes:
-      - ./data/data4:/data
+      - data4:/data
 
   nginx:
     image: nginx:1.19.2-alpine
@@ -62,3 +62,9 @@ services:
       - minio2
       - minio3
       - minio4
+
+volumes:
+  data1:
+  data2:
+  data3:
+  data4:
