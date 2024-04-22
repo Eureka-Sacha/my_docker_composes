@@ -1,8 +1,6 @@
 version: '3.7'
 # 配置信息
 #################### MinIO #####################
-x-minio-image: &minio-image
-                 minio/minio
 x-minio-data-dir: &minio-data-dir
   # 映射文件路径
   - ./minio/data:/data
@@ -30,7 +28,7 @@ x-dremio-data-dir: &dremio-data-dir
 services:
   # 1.MinIO服务器
   minio:
-    image: *minio-image
+    image: bitnami/minio
     container_name: minio
     ports:
       - "9000:9000"
@@ -44,15 +42,15 @@ services:
     #        reservations:
     #          cpus: '0.25'
     #          memory: 256M
-    command: server /data --console-address ":9001"
+#    command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: admin123 #大于等于8位
-    logging:
-      options:
-        max-size: "1024M" # 最大文件上传限制
-        max-file: "10"
-      driver: json-file
+#    logging:
+#      options:
+#        max-size: "1024M" # 最大文件上传限制
+#        max-file: "10"
+#      driver: json-file
     volumes: *minio-data-dir
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
@@ -118,11 +116,11 @@ services:
       - "31010:31010"
       - "32010:32010"
       - "45678:45678"
-#    volumes:
+    volumes:
 #      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
 #      - /etc/localtime:/etc/localtime:ro
-#      - ./dremio/data:/opt/dremio/data
-#      - ./dremio/var:/var/lib/dremio
+      - dremio-data:/opt/dremio/data
+      - dremio-data:/var/lib/dremio
 
   # 4. metabase
   metabase:
@@ -173,5 +171,5 @@ services:
   #      - ${NGINX_HTML_DIR}:/etc/nginx/html
 
 # 持久存储
-#volumes:
-#  dremio-data:
+volumes:
+  dremio-data:
