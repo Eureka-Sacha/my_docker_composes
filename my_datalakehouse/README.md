@@ -105,4 +105,9 @@
    ).write.option("header", "true").csv("s3a://datalake/demo3")
     ```
 
-## 如何在metadata上配置dremio
+## 如何在metadata上配置dremio(目前metadata的默认docker存在用户权限问题，导致不能直接挂载dremio插件。以下是临时方案)
+1. 从下载dremio插件 [github](https://github.com/Baoqi/metabase-dremio-driver/releases)
+2. 在docker compose 启动后，直接使用docker cp 命令将dremio插件拷贝metadata容器的/plugins目录下
+3. 重启metabase
+4. 使用metabase 控制台添加数据库，数据库类型选择dremio
+5. 填写对应host,port,user,pwd 保存即可

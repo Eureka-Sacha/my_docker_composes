@@ -8,13 +8,13 @@ volumes:
 #################### MinIO #####################
 x-minio-data-dir: &minio-data-dir
   # 映射文件路径
-  - ./minio/data:/data
+  - ./minio/data:/bitnami/minio/data
 
 #################### Metabase #####################
 x-metabase-data-dir: &metabase-data-dir
   # 映射文件路径
   - ./metabase/dev/random:/dev/random
-#  - ./metabase/plugins:/home/metabase/plugins
+  - ./metabase/plugins:/home/metabase/plugins
 
 #################### Spark #####################
 x-spark-data-dir: &spark-data-dir
@@ -116,10 +116,10 @@ services:
       #      resources:
       #        limits:
       #          cpus: '1.0'
-      #          memory: 2048M
-      #        reservations:
-      #          cpus: '0.5'
-      #          memory: 1024M
+    #          memory: 2048M
+    #        reservations:
+    #          cpus: '0.5'
+    #          memory: 1024M
     #    environment:
     ports:
       - "9047:9047"
@@ -144,7 +144,9 @@ services:
       MB_DB_USER: metabase
       MB_DB_PASS: metabase123
       MB_DB_HOST: postgres-secrets
-      MB_PLUGINS_DIR:
+    #    MB_PLUGINS_DIR: /home/metabase/plugins
+    #    MB_CONFIG_FILE_PATH: /home/metabase/config.yaml
+
     healthcheck:
       test: curl --fail -I http://localhost:3000/api/health || exit 1
       interval: 15s
