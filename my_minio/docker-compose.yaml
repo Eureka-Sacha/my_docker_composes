@@ -11,6 +11,7 @@ x-minio-common: &minio-common
     - MINIO_DISTRIBUTED_MODE_ENABLED=yes
     - MINIO_DISTRIBUTED_NODES=minio1,minio2,minio3,minio4
     - MINIO_SKIP_CLIENT=yes
+    - MINIO_DEFAULT_BUCKETS=yugan
   #    - MINIO_HTTP_TRACE=/opt/bitnami/minio/log/minio.log
   healthcheck:
     test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]

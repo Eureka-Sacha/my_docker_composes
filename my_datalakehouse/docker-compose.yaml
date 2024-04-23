@@ -121,6 +121,8 @@ services:
 #      - /etc/localtime:/etc/localtime:ro
       - dremio-data:/opt/dremio/data
       - dremio-data:/var/lib/dremio
+      - ./dremio/config/dremio.conf:/opt/dremio/conf/dremio.conf:ro
+      - ./dremio/config/dremio-env:/opt/dremio/conf/dremio-env:ro
 
   # 4. metabase
   metabase:
