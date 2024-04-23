@@ -8,8 +8,8 @@ x-minio-data-dir: &minio-data-dir
 #################### Metabase #####################
 x-metabase-data-dir: &metabase-data-dir
   # 映射文件路径
-  - ./metabase/dev/urandom:/dev/random:ro
-  - ./metabase/plugins:/plugins
+  - ./metabase/dev/random:/dev/random:ro
+  - ./metabase/plugins:/plugins:ro
 
 #################### Spark #####################
 x-spark-data-dir: &spark-data-dir
