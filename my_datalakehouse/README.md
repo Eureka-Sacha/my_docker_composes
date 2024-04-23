@@ -87,5 +87,20 @@
    --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
    --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
    
+   // 1.创建一个一亿行的delta数据集
    spark.range(100000000).write.format("delta").save("s3a://datalake/demo")
+   
+   // 2.创建一个包含1亿行
+   spark.range(100000000).select(
+   (rand(seed=42) * 1000).cast("int").alias("column1"),
+   (rand(seed=24) * 1000).cast("int").alias("column2"),
+   (rand(seed=66) * 1000).cast("int").alias("column3")
+   ).write.format("delta").save("s3a://datalake/demo2")
+   
+   // 3.创建一个1000万的csv
+   spark.range(10000000).select(
+   (rand(seed=42) * 1000).cast("int").alias("column1"),
+   (rand(seed=24) * 1000).cast("int").alias("column2"),
+   (rand(seed=66) * 1000).cast("int").alias("column3")
+   ).write.option("header", "true").csv("s3a://datalake/demo3")
     ```
