@@ -14,7 +14,7 @@ x-minio-data-dir: &minio-data-dir
 x-metabase-data-dir: &metabase-data-dir
   # 映射文件路径
   - ./metabase/dev/random:/dev/random
-  - ./metabase/plugins/dremio.metabase-driver.jar:/home/metabase/plugins/dremio.metabase-driver.jar
+  - ./metabase/plugins:/home/metabase/plugins
 
 #################### Spark #####################
 x-spark-data-dir: &spark-data-dir
@@ -132,6 +132,7 @@ services:
   metabase:
     image: metabase/metabase
     container_name: metabase
+    user: root
     hostname: metabase
     restart: always
     volumes: *metabase-data-dir
