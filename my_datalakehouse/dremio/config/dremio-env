@@ -117,5 +117,7 @@
 #DREMIO_JAVA_CLIENT_EXTRA_OPTS=
 
 # Extra Java options - server only (dremio command)
-#
-#DREMIO_JAVA_SERVER_EXTRA_OPTS=
+# 增加UTF-8支持
+# 若要支持 UTF-16，请将 的值设置为"-Dsaffron.default.charset=UTF-16 -Dsaffron.default.nationalcharset=UTF-16 -Dsaffron.default.collation.name=UTF-16$en_US"
+
+DREMIO_JAVA_SERVER_EXTRA_OPTS='-Dsaffron.default.charset=UTF-8 -Dsaffron.default.nationalcharset=UTF-8 -Dsaffron.default.collation.name=UTF-8$en_US'
