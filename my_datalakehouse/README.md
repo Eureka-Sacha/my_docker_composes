@@ -104,3 +104,5 @@
    (rand(seed=66) * 1000).cast("int").alias("column3")
    ).write.option("header", "true").csv("s3a://datalake/demo3")
     ```
+
+## 如何在metadata上配置dremio
