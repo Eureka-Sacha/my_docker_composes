@@ -1,4 +1,9 @@
 version: '3.7'
+
+# 持久存储
+volumes:
+  dremio-data:
+
 # 配置信息
 #################### MinIO #####################
 x-minio-data-dir: &minio-data-dir
@@ -171,6 +176,3 @@ services:
   #      - ${NGINX_LOG_DIR}:/var/log/nginx
   #      - ${NGINX_HTML_DIR}:/etc/nginx/html
 
-# 持久存储
-volumes:
-  dremio-data:
