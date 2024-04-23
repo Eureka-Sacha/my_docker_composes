@@ -46,7 +46,7 @@ services:
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: admin123 #大于等于8位
-      MINIO_DEFAULT_BUCKETS: datalake
+      MINIO_DEFAULT_BUCKETS: datalake,dremio
     #    logging:
     #      options:
     #        max-size: "1024M" # 最大文件上传限制

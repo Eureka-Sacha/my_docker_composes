@@ -82,10 +82,10 @@
    --packages io.delta:delta-core_2.12:1.0.0,org.apache.hadoop:hadoop-aws:3.2.0 \
    --conf "spark.hadoop.fs.s3a.access.key=admin" \
    --conf "spark.hadoop.fs.s3a.secret.key=admin123" \
-   --conf "spark.hadoop.fs.s3a.endpoint=http://minio:9000" \
+   --conf "spark.hadoop.fs.s3a.endpoint=http://192.168.1.2:9000" \
    --conf "spark.databricks.delta.retentionDurationCheck.enabled=false" \
    --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
    --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
    
-   spark.range(100000000).write.format("delta").save("s3a://deltalake/demo")
+   spark.range(100000000).write.format("delta").save("s3a://datalake/demo")
     ```
