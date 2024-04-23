@@ -42,15 +42,16 @@ services:
     #        reservations:
     #          cpus: '0.25'
     #          memory: 256M
-#    command: server /data --console-address ":9001"
+    #    command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: admin123 #大于等于8位
-#    logging:
-#      options:
-#        max-size: "1024M" # 最大文件上传限制
-#        max-file: "10"
-#      driver: json-file
+      MINIO_DEFAULT_BUCKETS: datalake
+    #    logging:
+    #      options:
+    #        max-size: "1024M" # 最大文件上传限制
+    #        max-file: "10"
+    #      driver: json-file
     volumes: *minio-data-dir
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
@@ -64,7 +65,7 @@ services:
     hostname: spark-master
     restart: always
     container_name: spark-master
-#    network_mode: host
+    #    network_mode: host
     command: /opt/spark/sbin/start-master.sh
     volumes: *spark-data-dir
     environment:
@@ -98,31 +99,32 @@ services:
   dremio:
     image: dremio/dremio-oss
     container_name: dremio
-#    command: -H unix:///var/run/docker.sock
+    #    command: -H unix:///var/run/docker.sock
     restart: always
-    #    deploy:
-    #      resources:
-    #        limits:
-    #          cpus: '1.0'
-    #          memory: 2048M
-    #        reservations:
-    #          cpus: '0.5'
-    #          memory: 1024M
-#    environment:
-      # 中文查询乱码问题解决
-#      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
+      #    deploy:
+      #      resources:
+      #        limits:
+      #          cpus: '1.0'
+      #          memory: 2048M
+      #        reservations:
+      #          cpus: '0.5'
+      #          memory: 1024M
+      #    environment:
+    # 中文查询乱码问题解决
+    #      - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dsaffron.default.charset=UTF-16LE -Dsaffron.default.nationalcharset=UTF-16LE -Dsaffron.default.collation.name=UTF-16LE\$en_US
     ports:
       - "9047:9047"
       - "31010:31010"
       - "32010:32010"
       - "45678:45678"
     volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
-#      - /etc/localtime:/etc/localtime:ro
+      #      - /var/run/docker.sock:/var/run/docker.sock #数据文件挂载
+      #      - /etc/localtime:/etc/localtime:ro
       - dremio-data:/opt/dremio/data
       - dremio-data:/var/lib/dremio
       - ./dremio/config/dremio.conf:/opt/dremio/conf/dremio.conf:ro
       - ./dremio/config/dremio-env:/opt/dremio/conf/dremio-env:ro
+      - ./dremio/config/core-site.xml:/opt/dremio/conf/core-site.xml:ro
 
   # 4. metabase
   metabase:
