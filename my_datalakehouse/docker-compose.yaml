@@ -14,7 +14,7 @@ x-minio-data-dir: &minio-data-dir
 x-metabase-data-dir: &metabase-data-dir
   # 映射文件路径
   - ./metabase/dev/random:/dev/random
-  - ./metabase/plugins:/plugins:z
+  - ./metabase/plugins:/home/metabase/plugins
 
 #################### Spark #####################
 x-spark-data-dir: &spark-data-dir
@@ -144,6 +144,12 @@ services:
       MB_DB_USER: metabase
       MB_DB_PASS: metabase123
       MB_DB_HOST: postgres-secrets
+      MB_PLUGINS_DIR: /home/metabase/plugins
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 5
     depends_on:
       - postgres-secrets
   # 4. metabase依赖的数据库
