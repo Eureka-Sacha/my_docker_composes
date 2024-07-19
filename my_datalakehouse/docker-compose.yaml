@@ -166,6 +166,11 @@ services:
       POSTGRES_PASSWORD: metabase123
     volumes: *postgres-data-dir
 
+  nessie:
+    image: ghcr.io/projectnessie/nessie
+    container_name: nessie
+    ports:
+      - "19120:19120"
 
   # 5.Nginx服务器
   #  nginx:

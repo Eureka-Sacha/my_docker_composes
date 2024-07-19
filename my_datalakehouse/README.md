@@ -111,3 +111,10 @@
 3. 重启metabase
 4. 使用metabase 控制台添加数据库，数据库类型选择dremio
 5. 填写对应host,port,user,pwd 保存即可
+
+
+
+```
+   docker pull ghcr.io/projectnessie/nessie
+   https://projectnessie.org/nessie-latest/configuration/
+```
