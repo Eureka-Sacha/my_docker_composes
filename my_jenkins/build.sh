@@ -1,0 +1,1 @@
+docker build -t my_jenkins:lts-jdk17 .
